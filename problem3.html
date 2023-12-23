@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+   
+    <title>Fetch Users</title>
+    <style>
+        body {
+    font-family: Arial, sans-serif;
+    background-color: #f4f4f4;
+    margin: 0;
+    padding: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    height: 100vh;
+}
+
+.container {
+    text-align: center;
+}
+
+button {
+    background-color: #4caf50;
+    color: #fff;
+    padding: 10px 15px;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+}
+
+button:hover {
+    background-color: #45a049;
+}
+
+.user-card {
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    padding: 15px;
+    margin: 10px;
+    background-color: #fff;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    display: inline-block;
+}
+
+img {
+    max-width: 100px;
+    border-radius: 50%;
+    margin-bottom: 10px;
+}
+
+p {
+    margin: 5px 0;
+}
+
+    </style>
+</head>
+<body>
+    <div class="container">
+        <button onclick="fetchUsers()">Fetch Users</button>
+        <div id="userList"></div>
+    </div>
+
+    <script>
+        function fetchUsers() {
+    const url = 'https://reqres.in/api/users?page=1'; // Using Reqres API to fetch user data
+
+    fetch(url)
+        .then(response => response.json())
+        .then(data => {
+            if (data.data) {
+                displayUsers(data.data);
+            } else {
+                alert('Error fetching user data');
+            }
+        })
+        .catch(error => {
+            console.error('Error fetching user data:', error);
+        });
+}
+
+function displayUsers(users) {
+    const userListContainer = document.getElementById('userList');
+    userListContainer.innerHTML = ''; // Clear previous user data
+
+    users.forEach(user => {
+        const userCard = document.createElement('div');
+        userCard.classList.add('user-card');
+
+        const userAvatar = document.createElement('img');
+        userAvatar.src = user.avatar;
+        userAvatar.alt = 'User Avatar';
+
+        const userName = document.createElement('p');
+        userName.textContent = `Name: ${user.first_name} ${user.last_name}`;
+
+        const userEmail = document.createElement('p');
+        userEmail.textContent = `Email: ${user.email}`;
+
+        userCard.appendChild(userAvatar);
+        userCard.appendChild(userName);
+        userCard.appendChild(userEmail);
+
+        userListContainer.appendChild(userCard);
+    });
+}
+
+    </script>
+</body>
+</html>
